@@ -16,11 +16,39 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    emmail: DataTypes.STRING,
-    password: DateTypes.STRING
+    email: DataTypes.STRING,
+    password: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'Users',
   });
+
+  User.readdata=async function(id){
+    const row= await sequelize.models.Users.findByPk(id);
+    return row;
+  };
+
+  User.Insertdata=async function(record){
+    const row=await sequelize.models.Users.create(record);
+    return row? true : false;
+  }
+
+  User.Deletedata = async function(idval){
+    const row=await sequelize.models.Users.destroy({where: {id:idval}});
+    console.log(row);
+    return row? true : false;
+  }
+
+  User.Updatepassword = async function(idval,email){
+    const row=await User.update({ email: email }, {
+      where: {
+        id:idval
+      }
+    });
+    console.log(row);
+    return row? true : false;
+  }
+
   return User;
 };
+
